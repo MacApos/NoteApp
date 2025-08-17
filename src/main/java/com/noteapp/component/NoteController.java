@@ -4,10 +4,9 @@ import com.noteapp.model.Note;
 import com.noteapp.service.NoteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,8 +16,24 @@ public class NoteController {
     private final NoteService noteService;
 
     @PostMapping
-    public Note note(@RequestBody @Valid Note note) {
+    public Note createNote(@RequestBody @Valid Note note) {
         noteService.save(note);
         return note;
     }
+
+    @GetMapping
+    public List<Note> findAll() {
+        return noteService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Note findById(@PathVariable Long id) {
+        return noteService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        noteService.deleteById(id);
+    }
+
 }

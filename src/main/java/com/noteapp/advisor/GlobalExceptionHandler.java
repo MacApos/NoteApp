@@ -3,6 +3,7 @@ package com.noteapp.advisor;
 import com.noteapp.exception.EntityNotFound;
 import com.noteapp.exception.ErrorBody;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -29,10 +30,13 @@ public class GlobalExceptionHandler {
                 errors.add(error.getField() + " " + error.getDefaultMessage())
         );
 
-        exception.getBindingResult().getGlobalErrors().forEach(error ->
-                errors.add(error.getObjectName() + " " + error.getDefaultMessage())
-        );
         return new ErrorBody(HttpStatus.BAD_REQUEST, errors);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorBody handleInvalidJson() {
+        return new ErrorBody(HttpStatus.BAD_REQUEST, "JSON parse error");
     }
 
     @ExceptionHandler(Exception.class)
@@ -40,5 +44,4 @@ public class GlobalExceptionHandler {
     public ErrorBody handleGeneral(Exception ex) {
         return new ErrorBody(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error: " + ex.getMessage());
     }
-
 }

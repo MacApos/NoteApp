@@ -5,6 +5,7 @@ import com.noteapp.model.Author;
 import com.noteapp.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,20 +14,27 @@ import java.util.List;
 public class AuthorService {
     private final AuthorRepository authorRepository;
 
-    public Author findById(Long id) {
-        return authorRepository.findById(id).orElseThrow(() -> new EntityNotFound(
-                "Author", id));
-    }
-
     public List<Author> findAll() {
         return authorRepository.findAll();
     }
 
+    public Author findById(Long id) {
+        return authorRepository.findById(id).orElseThrow(() ->
+                new EntityNotFound("Author", id));
+    }
+
+    @Transactional
     public void save(Author author) {
         authorRepository.save(author);
     }
 
-    public void delete(Author author) {
-        authorRepository.delete(author);
+    @Transactional
+    public void saveAll(List<Author> authors) {
+        authors.forEach(this::save);
     }
+
+    public void deleteAll() {
+        authorRepository.deleteAll(findAll());
+    }
+
 }
