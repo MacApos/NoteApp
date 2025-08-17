@@ -1,5 +1,6 @@
 package com.noteapp.service;
 
+import com.noteapp.exception.EntityNotFound;
 import com.noteapp.model.Author;
 import com.noteapp.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +14,11 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
 
     public Author findById(Long id) {
-        return authorRepository.findById(id).orElse(null);
+        return authorRepository.findById(id).orElseThrow(() -> new EntityNotFound(
+                "Author", id));
     }
 
-    public List<Author> findAll(){
+    public List<Author> findAll() {
         return authorRepository.findAll();
     }
 
