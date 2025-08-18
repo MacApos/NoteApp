@@ -29,12 +29,11 @@ class AuthorControllerTest {
     @Autowired
     private AuthorService authorService;
 
-    String baseUrl ;
-
+    String baseUrl;
 
     @BeforeEach
     void setUp() {
-        baseUrl =  "http://localhost:" + port + "/authors";
+        baseUrl = "http://localhost:" + port + "/authors";
         authorService.deleteAll();
     }
 
