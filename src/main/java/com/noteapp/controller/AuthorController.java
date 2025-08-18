@@ -16,7 +16,7 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @PostMapping
-    public Author createAuthor(@RequestBody @Valid Author author){
+    public Author create(@RequestBody @Valid Author author) {
         authorService.save(author);
         return author;
     }

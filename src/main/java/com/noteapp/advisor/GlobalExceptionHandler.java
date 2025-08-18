@@ -8,6 +8,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +17,6 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(EntityNotFound.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorBody handleException(EntityNotFound exception) {
-        return new ErrorBody(HttpStatus.NOT_FOUND, exception.getMessage());
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -37,6 +34,18 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorBody handleInvalidJson() {
         return new ErrorBody(HttpStatus.BAD_REQUEST, "JSON parse error");
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorBody handleException(NoResourceFoundException exception) {
+        return new ErrorBody(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    @ExceptionHandler(EntityNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorBody handleException(EntityNotFound exception) {
+        return new ErrorBody(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

@@ -2,6 +2,8 @@ package com.noteapp.controller;
 
 import com.noteapp.model.Author;
 import com.noteapp.service.AuthorService;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,14 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 class AuthorControllerTest {
+
+    private String baseUrl;
+
     @LocalServerPort
     private int port;
 
@@ -29,16 +34,18 @@ class AuthorControllerTest {
     @Autowired
     private AuthorService authorService;
 
-    String baseUrl;
-
     @BeforeEach
     void setUp() {
         baseUrl = "http://localhost:" + port + "/authors";
+    }
+
+    @AfterEach
+    void tearDown() {
         authorService.deleteAll();
     }
 
     @Test
-    void testCreateAuthor() {
+    void create() {
         Author author = new Author("John");
         authorService.save(author);
 
@@ -52,20 +59,22 @@ class AuthorControllerTest {
     }
 
     @Test
-    void testFindAllAuthors() {
+    void findAllAuthors() {
         Author author1 = new Author("Bob");
         Author author2 = new Author("Alice");
         authorService.saveAll(List.of(author1, author2));
 
         ResponseEntity<List<Author>> response = restTemplate.exchange(baseUrl, HttpMethod.GET,
                 null, new ParameterizedTypeReference<>() {});
+        List<Author> responseBody = response.getBody();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().size()).isEqualTo(2);
+        assertThat(responseBody).isNotNull();
+        assertThat(responseBody).hasSize(2);
     }
 
     @Test
-    void testFindById() {
+    void findById() {
         Author author = new Author("Charlie");
         authorService.save(author);
 

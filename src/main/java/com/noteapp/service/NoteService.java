@@ -5,6 +5,7 @@ import com.noteapp.model.Note;
 import com.noteapp.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,16 +20,25 @@ public class NoteService {
     }
 
     public Note findById(Long id) {
-        return noteRepository.findById(id).orElseThrow(()->new EntityNotFound("Note", id));
+        return noteRepository.findById(id).orElseThrow(() -> new EntityNotFound("Note", id));
     }
 
+    @Transactional
+    public void saveAll(List<Note> notes) {
+        noteRepository.saveAll(notes);
+    }
+
+    @Transactional
     public void save(Note note) {
         authorService.findById(note.getAuthor().getId());
         noteRepository.save(note);
     }
 
     public void deleteById(Long id) {
-        Note note = findById(id);
-        noteRepository.delete(note);
+        noteRepository.delete(findById(id));
+    }
+
+    public void deleteAll() {
+        noteRepository.deleteAll();
     }
 }

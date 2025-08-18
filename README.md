@@ -58,10 +58,9 @@ Create a note
    ```sh
    curl -X POST http://localhost:8080/notes \
       -H "Content-Type: application/json" \
-      -d \
-      '{
-        "title": "Groceries",
-        "content": "Do the groceries",
+      -d '{ 
+        "title": "First note",
+        "content": "Note content",
         "author": {
           "id": 1
         }
@@ -79,6 +78,7 @@ Get note by id
    ```sh
    curl -X GET http://localhost:8080/notes/1
    ```
+
 Delete note by id
 
    ```sh

@@ -30,7 +30,7 @@ public class AuthorService {
 
     @Transactional
     public void saveAll(List<Author> authors) {
-        authors.forEach(this::save);
+        authorRepository.saveAll(authors);
     }
 
     public void deleteAll() {

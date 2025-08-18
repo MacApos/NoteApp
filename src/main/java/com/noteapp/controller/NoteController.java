@@ -16,7 +16,7 @@ public class NoteController {
     private final NoteService noteService;
 
     @PostMapping
-    public Note createNote(@RequestBody @Valid Note note) {
+    public Note create(@RequestBody @Valid Note note) {
         noteService.save(note);
         return note;
     }
