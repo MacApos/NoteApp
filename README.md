@@ -1,6 +1,5 @@
 # NoteApp
-
-
+Simple app for creating and managing notes as well as their authors.
 
 ## Technologies
 
@@ -28,7 +27,7 @@
    ```
 
 ## API Endpoints
-# Author
+### Author
 Create an author
    ```sh
    curl -X POST http://localhost:8080/authors \
