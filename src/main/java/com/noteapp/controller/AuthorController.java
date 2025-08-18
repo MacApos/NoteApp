@@ -1,4 +1,4 @@
-package com.noteapp.component;
+package com.noteapp.controller;
 
 import com.noteapp.model.Author;
 import com.noteapp.service.AuthorService;

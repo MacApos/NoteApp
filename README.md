@@ -1,4 +1,5 @@
 # NoteApp
+
 This is a simple app for creating and managing notes as well as their authors.
 
 ## Technologies
@@ -27,18 +28,59 @@ This is a simple app for creating and managing notes as well as their authors.
    ```
 
 ## API Endpoints
+
 ### Author endpoints
+
 Create an author
+
    ```sh
    curl -X POST http://localhost:8080/authors \
       -H "Content-Type: application/json" \
       -d '{"name": "John Doe"}'
    ```
+
 Get all authors
+
    ```sh
    curl -X GET http://localhost:8080/authors
    ```
+
 Get author by id
+
    ```sh
    curl -X GET http://localhost:8080/authors/1
+   ```
+
+### Notes endpoints
+
+Create a note
+
+   ```sh
+   curl -X POST http://localhost:8080/notes \
+      -H "Content-Type: application/json" \
+      -d \
+      '{
+        "title": "Groceries",
+        "content": "Do the groceries",
+        "author": {
+          "id": 1
+        }
+      }'
+   ```
+
+Get all notes
+
+   ```sh
+   curl -X GET http://localhost:8080/notes
+   ```
+
+Get note by id
+
+   ```sh
+   curl -X GET http://localhost:8080/notes/1
+   ```
+Delete note by id
+
+   ```sh
+   curl -X DELETE http://localhost:8080/notes/1
    ```
